@@ -43,11 +43,13 @@ export function Sensor() {
   useEffect(() => {
     let subscription = null;
     if (viewSize) {
-      subscription = DeviceMotion.addListener(({ rotation }) => {
-        const { beta, gamma } = rotation;
-        setMoveBall({ x: viewSize.width / 2, y: viewSize.height / 2 });
-        console.log("Hello Device", event);
-      });
+      subscription = DeviceMotion.addListener(
+        // Destructuring the event parameter:
+        // { x: {...}, y: { ... }, rotation: { beta: 12, gamma: 13, somethingElse:34} }
+        ({ rotation: { beta, gamma } }) => {
+          setMoveBall({ x: viewSize.width / 2, y: viewSize.height / 2 });
+        }
+      );
     }
 
     console.log("Listener added");
